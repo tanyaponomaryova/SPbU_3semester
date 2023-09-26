@@ -16,7 +16,7 @@ namespace MatrixMultiplicationTests
         public void ParallelAndSequentialMultiolicationGiveSameResultsOnRandomMatrices(int firstRowsCount, int firstColumnsCount, int secondRowsCount, int secondColumnsCount)
         {
             var firstMatrix = MatrixMultiplication.Matrix.CreateRandomMatrix(firstRowsCount, firstColumnsCount);
-            var secondMatrix = MatrixMultiplication.Matrix.CreateRandomMatrix(secondRowsCount,secondColumnsCount);
+            var secondMatrix = MatrixMultiplication.Matrix.CreateRandomMatrix(secondRowsCount, secondColumnsCount);
 
             var resultMatricSequential = MatrixMultiplication.Matrix.SequentialMatrixMultiplication(firstMatrix, secondMatrix);
             var resultMatricParallel = MatrixMultiplication.Matrix.ParallelMatrixMultiplication(firstMatrix, secondMatrix);

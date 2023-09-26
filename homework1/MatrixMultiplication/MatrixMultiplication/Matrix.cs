@@ -1,7 +1,16 @@
 ﻿namespace MatrixMultiplication
 {
+    /// <summary>
+    /// Сlass that implements working with matrices.
+    /// </summary>
     public class Matrix
     {
+        /// <summary>
+        /// Method that reads a matrix from a file.
+        /// </summary>
+        /// <param name="filePath">path to the file from which the matrix needs to be read.</param>
+        /// <returns>read matrix as a two-dimensional array.</returns>
+        /// <exception cref="ArgumentException">The data in the file does not match the matrix format.</exception>
         public static int[,] GetMatrixFromFile(string filePath)
         {
             var linesArray = File.ReadAllLines(filePath);
@@ -12,14 +21,9 @@
 
             for (int i = 0; i < line.Length; i++)
             {
-                if (int.TryParse(line[i], out int number))
-                {
-                    matrix[0, i] = number;
-                }
-                else
-                {
-                    throw new ArgumentException("Matrix cannot contain anything other than numbers.");
-                }
+                matrix[0, i] = int.TryParse(line[i], out int number)
+                    ? number
+                    : throw new ArgumentException("Matrix in the file cannot contain anything other than numbers.");
             }
 
             for (int i = 1; i < linesArray.Length; i++)
@@ -27,19 +31,14 @@
                 line = linesArray[i].Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 if (line.Length != columnsCount)
                 {
-                    throw new ArgumentException("The rows of the matrix do not have the same number of elements.");
+                    throw new ArgumentException("The rows of the matrix in the file do not have the same number of elements.");
                 }
 
                 for (int j = 0; j < columnsCount; j++)
                 {
-                    if (int.TryParse(line[j], out int number))
-                    {
-                        matrix[i, j] = number;
-                    }
-                    else
-                    {
-                        throw new ArgumentException("Matrix cannot contain anything other than numbers.");
-                    }
+                    matrix[i, j] = int.TryParse(line[j], out int number)
+                        ? number
+                        : throw new ArgumentException("Matrix in the file cannot contain anything other than numbers.");
                 }
             }
 
@@ -51,6 +50,13 @@
             return firstMatrix.GetLength(1) == secondMatrix.GetLength(0);
         }
 
+        /// <summary>
+        /// Sequentially multiplies two matrices.
+        /// </summary>
+        /// <param name="firstMatrix">first matrix as a two-dimensional array.</param>
+        /// <param name="secondMatrix">second matrix as a two-dimensional array.</param>
+        /// <returns>result of multiplication.</returns>
+        /// <exception cref="ArgumentException">if the matrix dimensions do not correspond to each other.</exception>
         public static int[,] SequentialMatrixMultiplication(int[,] firstMatrix, int[,] secondMatrix)
         {
             if (!CheckConsistencyOfMatrixDimensions(firstMatrix, secondMatrix))
@@ -65,9 +71,6 @@
                 {
                     for (int k = 0; k < firstMatrix.GetLength(1); k++)
                     {
-                        int firstElement = firstMatrix[i, k];
-                        int secondElement = secondMatrix[k, j];
-
                         resultMatrix[i, j] += firstMatrix[i, k] * secondMatrix[k, j];
                     }
                 }
@@ -76,6 +79,13 @@
             return resultMatrix;
         }
 
+        /// <summary>
+        /// Multiplies two matrices in parallel.
+        /// </summary>
+        /// <param name="firstMatrix">first matrix as a two-dimensional array.</param>
+        /// <param name="secondMatrix">second matrix as a two-dimensional array.</param>
+        /// <returns>result of multiplication.</returns>
+        /// <exception cref="ArgumentException">if the matrix dimensions do not correspond to each other.</exception>
         public static int[,] ParallelMatrixMultiplication(int[,] firstMatrix, int[,] secondMatrix)
         {
             if (!CheckConsistencyOfMatrixDimensions(firstMatrix, secondMatrix))
@@ -93,8 +103,8 @@
                 {
                     for (int j = localI * matrixElementsPerThread; j < (localI + 1) * matrixElementsPerThread && j < resultMatrix.Length; j++)
                     {
-                        int rowOfCurrentElement = j / resultMatrix.GetLength(1); // находим ряд, в котором находится элемент, который сейчас будем считать
-                        int columnOfCurrentElement = j % resultMatrix.GetLength(1); // находим столбец
+                        int rowOfCurrentElement = j / resultMatrix.GetLength(1);
+                        int columnOfCurrentElement = j % resultMatrix.GetLength(1);
 
                         for (int k = 0; k < firstMatrix.GetLength(1); k++)
                         {
@@ -117,7 +127,12 @@
             return resultMatrix;
         }
 
-        public static void WriteResultMatrixToNewFile(int[,] matrix, string filePath)
+        /// <summary>
+        /// Writes the matrix to a file.
+        /// </summary>
+        /// <param name="matrix">matrix as a two-dimensional array.</param>
+        /// <param name="filePath">path to the file where you want to write the matrix.</param>
+        public static void WriteMatrixToFile(int[,] matrix, string filePath)
         {
             using var streamWriter = new StreamWriter(filePath);
             for (int i = 0; i < matrix.GetLength(0); i++)
@@ -130,6 +145,13 @@
             }
         }
 
+        /// <summary>
+        /// Generates a random matrix with given dimensions.
+        /// </summary>
+        /// <param name="rowsCount"></param>
+        /// <param name="columnsCount"></param>
+        /// <returns>generated matrix.</returns>
+        /// <exception cref="ArgumentException">if the number of columns or rows is negative or zero.</exception>
         public static int[,] CreateRandomMatrix(int rowsCount, int columnsCount)
         {
             if (rowsCount <= 0 || columnsCount <= 0)
@@ -150,6 +172,10 @@
             return resultMatrix;
         }
 
+        /// <summary>
+        /// Prints given matrix to console.
+        /// </summary>
+        /// <param name="matrix">matrix as two-dimensional array.</param>
         public static void PrintMatrix(int[,] matrix)
         {
             for (int i = 0; i < matrix.GetLength(0); i++)
@@ -162,7 +188,12 @@
             }
         }
 
-
+        /// <summary>
+        /// Сhecks if two matrices are equal.
+        /// </summary>
+        /// <param name="firstMatrix">first matrix as a two-dimensional array.</param>
+        /// <param name="secondMatrix">second matrix as a two-dimensional array.</param>
+        /// <returns>true if matrices are equal, else false.</returns>
         public static bool AreMatricesEqual(int[,] firstMatrix, int[,] secondMatrix)
         {
             if (firstMatrix.GetLength(0) != secondMatrix.GetLength(0) || firstMatrix.GetLength(1) != secondMatrix.GetLength(1))
@@ -179,7 +210,6 @@
                         return false;
                     }
                 }
-
             }
 
             return true;

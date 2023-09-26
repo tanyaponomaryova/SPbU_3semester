@@ -1,6 +1,1 @@
       Size:   E (parallel):   σ (parallel): E (sequential): σ (sequential):
-  100 x 100     0,03012 sec           0 sec     0,04372 sec           0 sec
-  200 x 200     0,12916 sec           0 sec     0,32001 sec           0 sec
-  300 x 300     0,46759 sec           0 sec     1,15005 sec           0 sec
-  400 x 400     1,15193 sec           0 sec     2,61815 sec           0 sec
-  500 x 500     3,60749 sec           0 sec     6,07056 sec           0 sec
