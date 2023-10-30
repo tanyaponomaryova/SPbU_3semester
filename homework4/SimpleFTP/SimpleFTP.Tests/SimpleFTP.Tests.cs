@@ -32,7 +32,7 @@ namespace SimpleFTP.Tests
         public async Task ListRequestTest()
         {
             var response = await client.ExecuteRequest($"1 ../../../FilesForTesting");
-            Assert.That(response, Is.EqualTo("3 ../../../FilesForTesting\\TextFile1.txt false ../../../FilesForTesting\\TextFile2.txt false ../../../FilesForTesting\\SomeDirectory true\r\n"));
+            Assert.That(response, Is.EqualTo("3 ../../../FilesForTesting\\TextFile1.txt false ../../../FilesForTesting\\TextFile2.txt false ../../../FilesForTesting\\SomeDirectory true\r\n.."));
 
             response = await client.ExecuteRequest($"1 ../../../FilesForTesting/SomeDirectory");
             Assert.That(response, Is.EqualTo("0\r\n"));
