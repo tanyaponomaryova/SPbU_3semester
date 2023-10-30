@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{5B55F137-B378-4938-B811-E15398F607BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{D2448161-9BEA-4DB7-9018-1C5E97645DCE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleFTP.Tests", "SimpleFTP.Tests\SimpleFTP.Tests.csproj", "{6D20A31F-6CB4-43A0-839B-8FCC65266864}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5B55F137-B378-4938-B811-E15398F607BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B55F137-B378-4938-B811-E15398F607BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B55F137-B378-4938-B811-E15398F607BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B55F137-B378-4938-B811-E15398F607BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2448161-9BEA-4DB7-9018-1C5E97645DCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2448161-9BEA-4DB7-9018-1C5E97645DCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2448161-9BEA-4DB7-9018-1C5E97645DCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2448161-9BEA-4DB7-9018-1C5E97645DCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D20A31F-6CB4-43A0-839B-8FCC65266864}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D20A31F-6CB4-43A0-839B-8FCC65266864}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D20A31F-6CB4-43A0-839B-8FCC65266864}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D20A31F-6CB4-43A0-839B-8FCC65266864}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AB13FB35-976E-4539-8CF3-E27E0910CE6F}
+	EndGlobalSection
+EndGlobal
