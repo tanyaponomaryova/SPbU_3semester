@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ConsoleNetworkChat": {
+      "commandName": "Project",
+      "commandLineArgs": "8888 "
+    }
+  }
+}
