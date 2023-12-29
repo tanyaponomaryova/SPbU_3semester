@@ -16,7 +16,7 @@
         /// <param name="supplier">calculating function.</param>
         public SingleThreadedLazy(Func<T> supplier)
         {
-            this.supplier = supplier;            
+            this.supplier = supplier;
         }
 
         /// <summary>
