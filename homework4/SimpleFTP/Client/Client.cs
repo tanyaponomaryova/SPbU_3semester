@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net.Sockets;
 
 /// <summary>
 /// Class for client.
@@ -31,7 +24,7 @@ public class Client
     /// </summary>
     /// <param name="request"></param>
     /// <returns></returns>
-    public async Task<string> ExecuteRequest(string request)
+    public async Task<string> ExecuteRequest(string request) // не нужен
     {
         if (request.Length < 2 || request[0] != '1' && request[0] != '2')
         {
@@ -63,11 +56,11 @@ public class Client
         }
         else
         {
-            return response;
+            return response; // список или другая высокоур структура данных
         }
     }
 
-    private async Task<string> GetAsync(string path)
+    private async Task<string> GetAsync(string path) // возвращает байтовй массив
     {
         using var tcpClient = new TcpClient(ipAddress, port);
         using var writer = new StreamWriter(tcpClient.GetStream());
@@ -79,7 +72,7 @@ public class Client
 
         if (response[..2] == "-1")
         {
-            return "The specified file was not found.";
+            return "The specified file was not found."; // чтото сделать - бросить исключение, код ошибки
         }
         else
         {

@@ -2,6 +2,7 @@
 
 const string ENDMessage = "END";
 
+// из аргс
 Console.WriteLine("Enter port number of server:");
 var input = Console.ReadLine();
 if (!int.TryParse(input, out int port) || port < 1 || port > 65535)
@@ -21,6 +22,7 @@ if (!IPAddress.TryParse(input, out _) || ipAddress == null)
 var client = new Client(ipAddress, port);
 Console.WriteLine($"Enter \"{ENDMessage}\" to end client.");
 
+// реквест из аргс
 while (true)
 {
     var request = Console.ReadLine();

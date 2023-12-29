@@ -1,5 +1,6 @@
 ﻿const string ENDMessage = "END";
 
+// убрать ридлайн
 Console.WriteLine("Enter port number for server: ");
 var input = Console.ReadLine();
 if (!int.TryParse(input, out int port) || port < 1 || port > 65535)
@@ -9,7 +10,7 @@ if (!int.TryParse(input, out int port) || port < 1 || port > 65535)
 }
 
 var server = new Server(port);
-_ = server.Start();
+var serverTask = server.Start();
 Console.WriteLine($"Enter \"{ENDMessage}\" to end the server.");
 
 while (true)
@@ -21,3 +22,5 @@ while (true)
         break;
     }
 }
+
+await serverTask;
