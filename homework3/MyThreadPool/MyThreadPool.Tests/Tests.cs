@@ -34,27 +34,26 @@ public class Tests
         Assert.That(continuation2.Result, Is.EqualTo("211844"));
     }
 
-    // исправить тест
     [Test]
     public void NumberOfThreadsMatchesNumberFromConstructor()
     {
         CountdownEvent countdownEvent = new(numberOfThreads);
-        // ManualResetEvent mre = new(false);
+        ManualResetEvent mre = new(false);
 
         for (var i = 0; i < numberOfThreads; i++)
         {
             threadPool.Submit(() =>
             {
                 countdownEvent.Signal();
-                // mre.WaitOne();
+                mre.WaitOne();
                 return 0;
             });
         }
 
         var controlThread = new Thread(() =>
         {
-            // mre.Set();
             countdownEvent.Wait();
+            mre.Set();
         });
 
         controlThread.Start();
@@ -81,5 +80,20 @@ public class Tests
         threadPool.Shutdown();
         Assert.Throws<InvalidOperationException>(() => task.ContinueWith(x => x + 1));
         Assert.Throws<InvalidOperationException>(() => threadPool.Submit(() => 1).ContinueWith(x => x + 1));
+    }
+
+    [Test]
+    public void ShutdownAfterContinueWithOfLongTask()
+    {
+        var longTask = threadPool.Submit(() =>
+        {
+            Thread.Sleep(100);
+            return 0;
+        });
+        var continuation = longTask.ContinueWith(x => x);
+
+        threadPool.Shutdown();
+
+        Assert.That(continuation.Result, Is.EqualTo(0));
     }
 }

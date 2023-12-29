@@ -15,7 +15,7 @@ public class MyThreadPool
             this.threadPool = threadPool;
         }
 
-        private Func<TResult> function;
+        private Func<TResult>? function;
         private MyThreadPool threadPool;
         private ManualResetEvent resultIsReadyEvent = new(false);
         private object locker = new();
@@ -42,6 +42,9 @@ public class MyThreadPool
         {
             try
             {
+                if (function == null)
+                    throw new ArgumentNullException();
+
                 result = function();
             }
             catch (Exception ex)
@@ -55,6 +58,8 @@ public class MyThreadPool
                     IsCompleted = true;
                     resultIsReadyEvent.Set();
                 }
+
+                function = null;
 
                 RunContinuationTasks();
             }
@@ -98,7 +103,7 @@ public class MyThreadPool
     private CancellationTokenSource cts = new();
     private object ctsLocker = new();
     private ManualResetEvent shutdownRequestedEvent = new(false);
-    private AutoResetEvent queueIsNotEmptyEvent = new(false); 
+    private AutoResetEvent queueIsNotEmptyEvent = new(false);
     private WaitHandle[] events;
 
     public MyThreadPool(int numberOfThreads)
@@ -152,7 +157,7 @@ public class MyThreadPool
     /// </summary>
     /// <exception cref="InvalidOperationException"></exception>
     public IMyTask<TResult> Submit<TResult>(Func<TResult> function)
-    { 
+    {
         // нет синхронизации
         if (cts.IsCancellationRequested)
         {
