@@ -4,7 +4,7 @@
     return;
 }
 
-Console.WriteLine("Tests are running...");
+Console.WriteLine("Tests are running...\n");
 var myNUnit = new MyNUnit.MyNUnit();
 myNUnit.RunTests(args[0]);
 myNUnit.PrintResults();

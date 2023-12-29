@@ -127,10 +127,10 @@ namespace MyNUnit
         /// </summary>
         public void PrintResults()
         {
-            Console.WriteLine("Testing results:");
+            Console.WriteLine("Testing results:\n");
             foreach (var _class in TestResults.Keys)
             {
-                Console.WriteLine($"Class: {_class}");
+                Console.WriteLine($"Class: {_class}\n");
                 foreach (var testInfo in TestResults[_class])
                 {
                     Console.WriteLine($"Method: {testInfo.MethodName}()");
@@ -158,7 +158,11 @@ namespace MyNUnit
                             Console.WriteLine($"Test has failed");
                         }
                     }
+
+                    Console.WriteLine();
                 }
+
+                Console.WriteLine();
             }
         }
     }
