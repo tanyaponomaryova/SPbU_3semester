@@ -8,7 +8,7 @@ public class MultiThreadedLazy<T> : ILazy<T>
 {
     private Func<T>? supplier;
     private T? result;
-    private bool isResultCalculated = false;
+    private volatile bool isResultCalculated = false;
     private object locker = new();
 
     /// <summary>
@@ -34,6 +34,11 @@ public class MultiThreadedLazy<T> : ILazy<T>
         {
             if (!isResultCalculated)
             {
+                if (supplier == null)
+                {
+                    throw new InvalidOperationException();
+                }
+
                 result = supplier!();
                 isResultCalculated = true;
                 supplier = null;

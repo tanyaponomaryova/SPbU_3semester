@@ -111,4 +111,11 @@ public class Tests
             Assert.That(threadsExecutionResults[i + 1], Is.EqualTo(threadsExecutionResults[i]));
         }
     }
+
+    [Test]
+    public void SingleThreadedLazyTestNullToConstructor()
+    {
+        var lazy = new SingleThreadedLazy<int>(null);
+        lazy.Get();
+    }
 }

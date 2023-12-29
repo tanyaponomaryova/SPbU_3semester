@@ -14,10 +14,8 @@ public class SingleThreadedLazy<T> : ILazy<T>
     /// Initializes a new instance of the class.
     /// </summary>
     /// <param name="supplier">calculating function.</param>
-    public SingleThreadedLazy(Func<T> supplier)
-    {
-        this.supplier = supplier;
-    }
+    public SingleThreadedLazy(Func<T> supplier) 
+        => this.supplier = supplier;
 
     /// <summary>
     /// Сalculates the value.
@@ -27,6 +25,11 @@ public class SingleThreadedLazy<T> : ILazy<T>
     {
         if (!isResultCalculated)
         {
+            if (supplier == null)
+            {
+                throw new InvalidOperationException("Supplier is null.");
+            }
+
             result = supplier!();
             isResultCalculated = true;
             supplier = null;
