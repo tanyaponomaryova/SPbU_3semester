@@ -1,24 +1,24 @@
 ﻿using System.Collections.Concurrent;
 using System.Reflection;
 
-namespace MyNUnit
-{
-    /// <summary>
-    /// Class methods with corresponding attributes.
-    /// </summary>
-    public class ClassMethods
-    {
-        public ConcurrentBag<MethodInfo> MethodsWithTestAttr { get; private set; } = new();
-        public ConcurrentBag<MethodInfo> MethodsWithBeforeAttr { get; private set; } = new();
-        public ConcurrentBag<MethodInfo> MethodsWithAfterAttr { get; private set; } = new();
-        public ConcurrentBag<MethodInfo> MethodsWithBeforeClassAttr { get; private set; } = new();
-        public ConcurrentBag<MethodInfo> MethodsWithAfterClassAttr { get; private set; } = new();
+namespace MyNUnit;
 
-        public ClassMethods(Type _class)
-        {
-            var allMethodsInfo = _class.GetMethods();
-            Parallel.ForEach(allMethodsInfo,
-            (MethodInfo methodInfo) =>
+/// <summary>
+/// Class methods with corresponding attributes.
+/// </summary>
+public class ClassMethods
+{
+    public ConcurrentBag<MethodInfo> MethodsWithTestAttr { get; private set; } = new();
+    public ConcurrentBag<MethodInfo> MethodsWithBeforeAttr { get; private set; } = new();
+    public ConcurrentBag<MethodInfo> MethodsWithAfterAttr { get; private set; } = new();
+    public ConcurrentBag<MethodInfo> MethodsWithBeforeClassAttr { get; private set; } = new();
+    public ConcurrentBag<MethodInfo> MethodsWithAfterClassAttr { get; private set; } = new();
+
+    public ClassMethods(Type _class)
+    {
+        var allMethodsInfo = _class.GetMethods();
+        Parallel.ForEach(allMethodsInfo,
+            (MethodInfo methodInfo) => // проверить что не статик и что возврат не воид и нет аргументво
             {
                 if (methodInfo.GetCustomAttribute<TestAttribute>() != null)
                 {
@@ -55,6 +55,5 @@ namespace MyNUnit
                     }
                 }
             });
-        }
     }
 }

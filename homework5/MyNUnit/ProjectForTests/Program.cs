@@ -4,6 +4,8 @@ Console.WriteLine();
 
 public class ClassForTests
 {
+    // добавить неправ методы 
+
     public void NotTestMethod()
     {
 
@@ -16,16 +18,10 @@ public class ClassForTests
     }
 
     [Test(typeof(ArgumentException))]
-    public void TestMethodWithExpectedException()
-    {
-        throw new ArgumentException();
-    }
+    public void TestMethodWithExpectedException() => throw new ArgumentException();
 
     [Test(typeof(ArgumentException))]
-    public void TestMethodWithUnexpectedException()
-    {
-        throw new ArgumentNullException();
-    }
+    public void TestMethodWithUnexpectedException() => throw new ArgumentNullException();
 
     [Test(ignoreMessage: "This test should be ignored.")]
     public void IgnoredTestMethod()
