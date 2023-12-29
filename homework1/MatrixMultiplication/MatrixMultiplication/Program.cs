@@ -2,7 +2,7 @@
 
 Console.WriteLine("This program performs multiplication of " +
     "two matrices given in files \"firstMatrix.txt\" and \"secondMatrix.txt\".");
-
+// пути и exs
 try
 {
     var firstMatrix = Matrix.GetMatrixFromFile("../../../firstMatrix.txt");
@@ -20,7 +20,6 @@ try
     Console.WriteLine("Result of multiplication was written to file \"resultMatrix.txt\".");
     Console.WriteLine("To run a comparison of sequential and parallel multiplication, " +
         "enter the number of runs for each test case, to exit press any other key.");
-
 }
 catch (Exception e)
 {

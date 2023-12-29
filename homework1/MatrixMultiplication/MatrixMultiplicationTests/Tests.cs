@@ -1,5 +1,6 @@
 namespace MatrixMultiplicationTests
 {
+    // тест на матрице 1 на 1
     public class Tests
     {
         [TestCase(-2, 0)]
