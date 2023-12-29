@@ -33,7 +33,8 @@ if (int.TryParse(Console.ReadLine(), out int numberOfTestRuns))
 {
     try
     {
-        ComparePerformanceOfTwoMultiplicationAlgorithms.ExperimentOnRandomMatricesOfDifferentSizes(numberOfTestRuns, "../../../experimentResults.txt");
+        Console.WriteLine("Comparison experiment is running...");
+        ComparisonPerformanceOfTwoMultiplicationAlgorithms.RunExperiment(numberOfTestRuns, "../../../experimentResults.txt");
         Console.WriteLine("Results of experiment was written to file \"experimentResults.txt\".");
     }
     catch (Exception e)

@@ -5,7 +5,7 @@ namespace MatrixMultiplication
     /// <summary>
     /// Class for comparing sequential and parallel matrix multiplication.
     /// </summary>
-    public class ComparePerformanceOfTwoMultiplicationAlgorithms
+    public class ComparisonPerformanceOfTwoMultiplicationAlgorithms
     {
         /// <summary>
         /// Conducts the specified number of test runs of each multiplication algorithm and returns statistics on them.
@@ -19,7 +19,7 @@ namespace MatrixMultiplication
         /// <exception cref="ArgumentException">if number of test runs are negative or zero.</exception>
         public static (double mathExpectationSequental, double mathExpectationParallel,
                 double standartDeviationSequental, double standartDeviationParallel)
-                MakeComparisonOnGivenMatrices(int numberOfTestRuns, int[,] firstMatrix, int[,] secondMatrix)
+                CompareOnGivenMatrices(int numberOfTestRuns, int[,] firstMatrix, int[,] secondMatrix)
         {
             if (numberOfTestRuns <= 0)
             {
@@ -65,7 +65,7 @@ namespace MatrixMultiplication
         /// </summary>
         /// <param name="numberOfTestRuns"></param>
         /// <param name="filePathForResultTable"></param>
-        public static void ExperimentOnRandomMatricesOfDifferentSizes(int numberOfTestRuns, string filePathForResultTable)
+        public static void RunExperiment(int numberOfTestRuns, string filePathForResultTable)
         {
             using var streamWriter = new StreamWriter(filePathForResultTable);
             streamWriter.WriteLine("{0,11} {1,15} {2,15} {3,15} {4,15}",
@@ -75,7 +75,7 @@ namespace MatrixMultiplication
                 var firstMatrix = Matrix.CreateRandomMatrix(size, size);
                 var secondMatrix = Matrix.CreateRandomMatrix(size, size);
                 (double mathExpectationSequental, double mathExpectationParallel,
-                double standartDeviationSequental, double standartDeviationParallel) = MakeComparisonOnGivenMatrices(numberOfTestRuns, firstMatrix, secondMatrix);
+                double standartDeviationSequental, double standartDeviationParallel) = CompareOnGivenMatrices(numberOfTestRuns, firstMatrix, secondMatrix);
                 streamWriter.WriteLine(String.Format("{0,11} {1,15} {2,15} {3,15} {4,15}", size.ToString() + " x " + size.ToString(),
                     Math.Round(mathExpectationParallel, 5) + " sec", Math.Round(standartDeviationParallel, 5) + " sec",
                     Math.Round(mathExpectationSequental, 5) + " sec", Math.Round(standartDeviationSequental, 5) + " sec"));
