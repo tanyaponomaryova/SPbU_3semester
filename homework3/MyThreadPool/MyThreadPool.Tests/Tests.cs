@@ -2,7 +2,7 @@ namespace MyThreadPoolTests
 {
     public class Tests
     {
-        private MyThreadPool threadPool;
+        private MyThreadPool.MyThreadPool threadPool;
         private int numberOfThreads = Environment.ProcessorCount;
 
         [SetUp]

@@ -1,4 +1,6 @@
-﻿using System.Collections.Concurrent;
+﻿namespace MyThreadPool;
+
+using System.Collections.Concurrent;
 
 public class MyThreadPool
 {
@@ -141,6 +143,10 @@ public class MyThreadPool
         }
     }
 
+    /// <summary>
+    /// Submits the task for execution.
+    /// </summary>
+    /// <exception cref="InvalidOperationException"></exception>
     public IMyTask<TResult> Submit<TResult>(Func<TResult> function)
     {
         if (cts.IsCancellationRequested)
@@ -160,6 +166,10 @@ public class MyThreadPool
         queueIsNotEmptyEvent.Set();
     }
 
+    /// <summary>
+    /// Terminates the threads. Already running tasks are not interrupted, 
+    /// but new tasks are not accepted for execution by threads from the pool.
+    /// </summary>
     public void Shutdown()
     {
         cts.Cancel();
