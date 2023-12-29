@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Reflection;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Reflection;
 
 namespace MyNUnit
 {
@@ -21,22 +16,31 @@ namespace MyNUnit
         /// <summary>
         /// Returns classes from assemblies at the given path.
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
         private IEnumerable<Type> GetClasses(string path)
         {
-            var pathsToAssemblies = Directory.EnumerateDirectories(path, "*.dll", SearchOption.AllDirectories);
-            var classes = pathsToAssemblies.Select(Assembly.Load)
-                          .SelectMany(a => a.ExportedTypes)
-                          .Where(t => t.IsClass);
+            var assemblies = Directory.EnumerateFiles(path, "*.dll", SearchOption.AllDirectories).ToList();
+            assemblies.RemoveAll(pathToAssembly => pathToAssembly.Contains("\\MyNUnit.dll"));
 
-            return classes;
+            var allAssemblies = new List<string>();
+            var uniqueAssemblies = new List<string>();
+            foreach (var assembly in assemblies)
+            {
+                if (!allAssemblies.Contains(Path.GetFileName(assembly)))
+                {
+                    allAssemblies.Add(Path.GetFileName(assembly));
+                    uniqueAssemblies.Add(assembly);
+                }
+            }
+
+            return uniqueAssemblies.Select(Assembly.LoadFrom)
+                                    .SelectMany(a => a.ExportedTypes)
+                                    .Where(t => t.IsClass);
+
         }
 
         /// <summary>
         /// Runs tests in assemblies at the given path.
         /// </summary>
-        /// <param name="path"></param>
         public void RunTests(string path)
         {
             var classes = GetClasses(path);
@@ -48,6 +52,7 @@ namespace MyNUnit
 
             Parallel.ForEach(testMethods.Keys, _class =>
             {
+                TestResults.TryAdd(_class, new ConcurrentBag<TestResults>());
                 foreach (var beforeClassMethod in testMethods[_class].MethodsWithBeforeClassAttr)
                 {
                     beforeClassMethod.Invoke(null, null);
@@ -92,13 +97,13 @@ namespace MyNUnit
             try
             {
                 methodInfo.Invoke(classInstance, null);
-                
+
                 if (attribute.ExpectedException == null)
                 {
                     isSuccessful = true;
                 }
             }
-            catch(Exception e) 
+            catch (Exception e)
             {
                 thrownException = e.InnerException?.GetType();
 
@@ -123,7 +128,7 @@ namespace MyNUnit
         public void PrintResults()
         {
             Console.WriteLine("Testing results:");
-            foreach (var _class in TestResults.Keys) 
+            foreach (var _class in TestResults.Keys)
             {
                 Console.WriteLine($"Class: {_class}");
                 foreach (var testInfo in TestResults[_class])

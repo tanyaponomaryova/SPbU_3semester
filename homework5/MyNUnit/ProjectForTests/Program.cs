@@ -1,5 +1,7 @@
 ﻿using MyNUnit;
 
+Console.WriteLine();
+
 public class ClassForTests
 {
     public void NotTestMethod()

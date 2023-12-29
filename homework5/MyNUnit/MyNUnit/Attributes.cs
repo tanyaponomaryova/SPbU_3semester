@@ -5,7 +5,11 @@
     {
         public Type? ExpectedException { get; set; }
         public string? IgnoreMessage { get; set; }
-        public bool ShouldBeIgnored() => IgnoreMessage != null;
+        public bool ShouldBeIgnored()
+        {
+            return IgnoreMessage != null;
+        }
+
         public TestAttribute(Type? expectedException = null, string? ignoreMessage = null)
         {
             ExpectedException = expectedException;

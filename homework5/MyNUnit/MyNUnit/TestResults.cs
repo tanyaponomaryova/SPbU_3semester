@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MyNUnit
+﻿namespace MyNUnit
 {
     public class TestResults
     {
         public string MethodName { get; set; }
-        
+
         public bool IsIgnored { get; set; } = false;
 
         public string? IgnoreReason { get; set; }
@@ -25,8 +19,6 @@ namespace MyNUnit
         /// <summary>
         /// Constructor for ignored test methods.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="ignoreReason"></param>
         public TestResults(string name, string? ignoreReason)
         {
             MethodName = name;
