@@ -1,5 +1,9 @@
 ﻿namespace MyThreadPool;
 
+/// <summary>
+/// Interface for tasks.
+/// </summary>
+/// <typeparam name="TResult"></typeparam>
 public interface IMyTask<TResult>
 {
     /// <summary>

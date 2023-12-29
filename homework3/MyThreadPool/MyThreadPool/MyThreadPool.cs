@@ -2,6 +2,9 @@
 
 using System.Collections.Concurrent;
 
+/// <summary>
+/// Thread pool implementation.
+/// </summary>
 public class MyThreadPool
 {
     private class MyTask<TResult> : IMyTask<TResult>
@@ -90,12 +93,12 @@ public class MyThreadPool
         }
     }
 
-    private ConcurrentQueue<Action> tasksQueue = new();
+    private ConcurrentQueue<Action> tasksQueue = new(); // метод stop adding 
     private Thread[] threads;
     private CancellationTokenSource cts = new();
     private object ctsLocker = new();
     private ManualResetEvent shutdownRequestedEvent = new(false);
-    private AutoResetEvent queueIsNotEmptyEvent = new(false);
+    private AutoResetEvent queueIsNotEmptyEvent = new(false); 
     private WaitHandle[] events;
 
     public MyThreadPool(int numberOfThreads)
@@ -135,6 +138,7 @@ public class MyThreadPool
 
                 WaitHandle.WaitAny(events);
 
+                // чтото сделать
                 if (tasksQueue.Count >= 2)
                 {
                     queueIsNotEmptyEvent.Set();
@@ -148,7 +152,8 @@ public class MyThreadPool
     /// </summary>
     /// <exception cref="InvalidOperationException"></exception>
     public IMyTask<TResult> Submit<TResult>(Func<TResult> function)
-    {
+    { 
+        // нет синхронизации
         if (cts.IsCancellationRequested)
         {
             throw new InvalidOperationException("It is impossible to add new tasks after shutdown.");
@@ -160,6 +165,7 @@ public class MyThreadPool
         return task;
     }
 
+    // не синхронизировн с шатдаун
     private void SubmitContinuation(Action continuationAction)
     {
         tasksQueue.Enqueue(continuationAction);
@@ -172,8 +178,10 @@ public class MyThreadPool
     /// </summary>
     public void Shutdown()
     {
+        // под лок
         cts.Cancel();
         shutdownRequestedEvent.Set();
+        //
 
         foreach (var thread in threads)
         {
