@@ -1,11 +1,13 @@
-﻿namespace Lazy
+﻿namespace Lazy;
+
+/// <summary>
+/// Interface that represents lazy calculation.
+/// </summary>
+/// <typeparam name="T">type of returned value.</typeparam>
+public interface ILazy<T>
 {
     /// <summary>
-    /// Interface that represents lazy calculation.
+    /// Returns result of calculation.
     /// </summary>
-    /// <typeparam name="T">type of returned value.</typeparam>
-    public interface ILazy<T>
-    {
-        T Get();
-    }
+    T Get();
 }

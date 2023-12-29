@@ -1,115 +1,114 @@
-namespace Lazy.Tests
+namespace Lazy.Tests;
+
+[TestFixture]
+public class Tests
 {
-    [TestFixture]
-    public class Tests
+    private const int numberOfThreads = 100;
+
+    [Test]
+    public void SingleThreadedLazyReturnsExpectedResult()
     {
-        const int numberOfThreads = 100;
+        var lazyStringConcat = new SingleThreadedLazy<string>(() => string.Concat("string1", "string2"));
+        Assert.That(lazyStringConcat.Get(), Is.EqualTo("string1string2"));
+        Assert.That(lazyStringConcat.Get(), Is.EqualTo("string1string2"));
 
-        [Test]
-        public void SingleThreadedLazyReturnsExpectedResult()
+        var lazyObjectCreation = new SingleThreadedLazy<object>(() => new object());
+        var firstCallResult = lazyObjectCreation.Get();
+        var secondCallResult = lazyObjectCreation.Get();
+        Assert.That(secondCallResult, Is.SameAs(firstCallResult));
+    }
+
+    [Test]
+    public void MultiThreadedLazyReturnsExpectedResultInSeveralThreadsStringConcat()
+    {
+        var lazyStringConcat = new SingleThreadedLazy<string>(() => string.Concat("string1", "string2"));
+        var threads = new Thread[numberOfThreads];
+        var threadsExecutionResults = new string[threads.Length];
+        for (var i = 0; i < threads.Length; i++)
         {
-            var lazyStringConcat = new SingleThreadedLazy<string>(() => string.Concat("string1", "string2"));
-            Assert.That(lazyStringConcat.Get(), Is.EqualTo("string1string2"));
-            Assert.That(lazyStringConcat.Get(), Is.EqualTo("string1string2"));
-
-            var lazyObjectCreation = new SingleThreadedLazy<object>(() => new object());
-            var firstCallResult = lazyObjectCreation.Get();
-            var secondCallResult = lazyObjectCreation.Get();
-            Assert.That(secondCallResult, Is.SameAs(firstCallResult));
+            var localI = i;
+            threads[i] = new Thread(() =>
+            {
+                threadsExecutionResults[localI] = lazyStringConcat.Get();
+            });
         }
 
-        [Test]
-        public void MultiThreadedLazyReturnsExpectedResultInSeveralThreadsStringConcat()
+        foreach (var thread in threads)
         {
-            var lazyStringConcat = new SingleThreadedLazy<string>(() => string.Concat("string1", "string2"));
-            var threads = new Thread[numberOfThreads];
-            var threadsExecutionResults = new string[threads.Length];
-            for (int i = 0; i < threads.Length; i++)
-            {
-                var localI = i;
-                threads[i] = new Thread(() =>
-                {
-                    threadsExecutionResults[localI] = lazyStringConcat.Get();
-                });
-            }
-
-            foreach (var thread in threads)
-            {
-                thread.Start();
-            }
-
-            foreach (var thread in threads)
-            {
-                thread.Join();
-            }
-
-            for (int i = 0; i < threadsExecutionResults.Length - 1; i++)
-            {
-                Assert.That(threadsExecutionResults[i + 1], Is.EqualTo(threadsExecutionResults[i]));
-            }
+            thread.Start();
         }
 
-        [Test]
-        public void MultiThreadedLazyReturnsExpectedResultInSeveralThreadsObjectCreation()
+        foreach (var thread in threads)
         {
-            var lazyObjectCreation = new MultiThreadedLazy<object>(() => new object());
-            var threads = new Thread[numberOfThreads];
-            var threadsExecutionResults = new object[threads.Length];
-            for (int i = 0; i < threads.Length; i++)
-            {
-                var localI = i;
-                threads[i] = new Thread(() =>
-                {
-                    threadsExecutionResults[localI] = lazyObjectCreation.Get();
-                });
-            }
-
-            foreach (var thread in threads)
-            {
-                thread.Start();
-            }
-
-            foreach (var thread in threads)
-            {
-                thread.Join();
-            }
-
-            for (int i = 0; i < threadsExecutionResults.Length - 1; i++)
-            {
-                Assert.That(threadsExecutionResults[i + 1], Is.EqualTo(threadsExecutionResults[i]));
-            }
+            thread.Join();
         }
 
-        [Test]
-        public void MultiThreadedLazyTestIncrementation()
+        for (var i = 0; i < threadsExecutionResults.Length - 1; i++)
         {
-            int value = 0;
-            var lazyIncrementation = new MultiThreadedLazy<int>(() => ++value);
-            var threads = new Thread[numberOfThreads];
-            var threadsExecutionResults = new int[threads.Length];
-            for (int i = 0; i < threads.Length; i++)
-            {
-                var localI = i;
-                threads[i] = new Thread(() =>
-                {
-                    threadsExecutionResults[localI] = lazyIncrementation.Get();
-                });
-            }
+            Assert.That(threadsExecutionResults[i + 1], Is.EqualTo(threadsExecutionResults[i]));
+        }
+    }
 
-            foreach (var thread in threads)
+    [Test]
+    public void MultiThreadedLazyReturnsExpectedResultInSeveralThreadsObjectCreation()
+    {
+        var lazyObjectCreation = new MultiThreadedLazy<object>(() => new object());
+        var threads = new Thread[numberOfThreads];
+        var threadsExecutionResults = new object[threads.Length];
+        for (var i = 0; i < threads.Length; i++)
+        {
+            var localI = i;
+            threads[i] = new Thread(() =>
             {
-                thread.Start();
-            }
+                threadsExecutionResults[localI] = lazyObjectCreation.Get();
+            });
+        }
 
-            foreach (var thread in threads)
-            {
-                thread.Join();
-            }
+        foreach (var thread in threads)
+        {
+            thread.Start();
+        }
 
-            for (int i = 0; i < threadsExecutionResults.Length - 1; i++)
+        foreach (var thread in threads)
+        {
+            thread.Join();
+        }
+
+        for (var i = 0; i < threadsExecutionResults.Length - 1; i++)
+        {
+            Assert.That(threadsExecutionResults[i + 1], Is.EqualTo(threadsExecutionResults[i]));
+        }
+    }
+
+    [Test]
+    public void MultiThreadedLazyTestIncrementation()
+    {
+        var value = 0;
+        var lazyIncrementation = new MultiThreadedLazy<int>(() => ++value);
+        var threads = new Thread[numberOfThreads];
+        var threadsExecutionResults = new int[threads.Length];
+        for (var i = 0; i < threads.Length; i++)
+        {
+            var localI = i;
+            threads[i] = new Thread(() =>
             {
-                Assert.That(threadsExecutionResults[i + 1], Is.EqualTo(threadsExecutionResults[i]));
-            }
+                threadsExecutionResults[localI] = lazyIncrementation.Get();
+            });
+        }
+
+        foreach (var thread in threads)
+        {
+            thread.Start();
+        }
+
+        foreach (var thread in threads)
+        {
+            thread.Join();
+        }
+
+        for (var i = 0; i < threadsExecutionResults.Length - 1; i++)
+        {
+            Assert.That(threadsExecutionResults[i + 1], Is.EqualTo(threadsExecutionResults[i]));
         }
     }
 }
