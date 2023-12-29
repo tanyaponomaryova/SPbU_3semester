@@ -36,10 +36,10 @@ public class MultiThreadedLazy<T> : ILazy<T>
             {
                 if (supplier == null)
                 {
-                    throw new InvalidOperationException();
+                    throw new InvalidOperationException("Supplier is null.");
                 }
 
-                result = supplier!();
+                result = supplier();
                 isResultCalculated = true;
                 supplier = null;
             }

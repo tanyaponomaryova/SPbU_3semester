@@ -30,7 +30,7 @@ public class SingleThreadedLazy<T> : ILazy<T>
                 throw new InvalidOperationException("Supplier is null.");
             }
 
-            result = supplier!();
+            result = supplier();
             isResultCalculated = true;
             supplier = null;
         }

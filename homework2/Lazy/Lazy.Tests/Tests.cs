@@ -116,6 +116,6 @@ public class Tests
     public void SingleThreadedLazyTestNullToConstructor()
     {
         var lazy = new SingleThreadedLazy<int>(null);
-        lazy.Get();
+        Assert.Throws<InvalidOperationException>(() => lazy.Get());
     }
 }
