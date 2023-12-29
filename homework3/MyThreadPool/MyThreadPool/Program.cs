@@ -1,6 +1,9 @@
-﻿namespace MyThreadPool;
-
-static void Main(string[] args)
+﻿namespace MyThreadPool
 {
-
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+        }
+    }
 }
