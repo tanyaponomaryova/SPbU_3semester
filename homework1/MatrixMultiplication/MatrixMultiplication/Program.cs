@@ -16,7 +16,7 @@ try
         return;
     }
 
-    Matrix.WriteMatrixToFile(resultMatrixPar, "../../../resultMatrix.txt");
+    Matrix.WriteMatrixToFile(resultMatrixPar, "resultMatrix.txt");
     Console.WriteLine("Result of multiplication was written to file \"resultMatrix.txt\".");
     Console.WriteLine("To run a comparison of sequential and parallel multiplication, " +
         "enter the number of runs for each test case, to exit press any other key.");
@@ -31,6 +31,6 @@ catch (ArgumentException e)
 if (int.TryParse(Console.ReadLine(), out int numberOfTestRuns))
 {
     Console.WriteLine("Comparison experiment is running...");
-    ComparisonPerformanceOfTwoMultiplicationAlgorithms.RunExperiment(numberOfTestRuns, "../../../experimentResults.txt");
+    ComparisonPerformanceOfTwoMultiplicationAlgorithms.RunExperiment(numberOfTestRuns, "experimentResults.txt");
     Console.WriteLine("Results of experiment was written to file \"experimentResults.txt\".");
 }
